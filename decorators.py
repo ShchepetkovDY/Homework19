@@ -13,7 +13,7 @@ def auth_required(func):
         data = request.headers["Authorization"]
         token = data.split("Bearer ")[-1]
         try:
-            jwt.encode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+            jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
         except Exception as e:
             print("JWT Decode Error", e)
             abort(401)
@@ -31,7 +31,7 @@ def admin_required(func):
         data = request.headers["Authorization"]
         token = data.split("Bearer ")[-1]
         try:
-            user = jwt.encode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+            user = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
             role = user.get("role")
 
             if role != "admin":
